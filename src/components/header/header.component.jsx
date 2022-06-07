@@ -1,32 +1,58 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
+import { Fragment, useContext } from "react";
 
-import { auth } from '../../firebase/firebase.utils';
-import { ReactComponent as Logo } from '../../assets/crown.svg';
+import  CartIcon from "../../components/cart-icon/cart-icon.component";
 
-import './header.styles.scss'
+import { signOutUser } from "../../firebase/firebase.utils";
+import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 
-const Header = ({currentUser})=>(
-    <div className='header'>
-        <Link className='logo-container' to="/">
-            <Logo className='logo' />
+import { UserContext } from "../../contexts/user.context";
+import { CartContext } from "../../contexts/cart.context";
+
+import "./header.styles.scss";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+
+const Header = () => {
+  const { currentUser } = useContext(UserContext);
+
+  const { isCartOpen } = useContext(CartContext);
+
+  // const signOutHandler = async () => {
+  //   await signOutUser();
+  //   setCurrentUser(null);
+  // };
+  return (
+    <Fragment>
+      <div className="navigation">
+        <Link className="logo-container" to="/">
+          <CrwnLogo className="logo" />
         </Link>
-        <div className='options'>
-            <Link className='option' to='/shop'>Shop</Link>
-            <Link className='option' to='/contact'>Contact</Link>
-            {
-                currentUser ?
-                <div className='option' onClick={()=>auth.signOut()}>Sign Out</div>
-                :
-                <Link className='option' to='/signin'>Sign In</Link>
-            }
+        <div className="nav-links-container">
+          <Link className="nav-link" to="/shop">
+            Shop
+          </Link>
+          <Link className="nav-link" to="/contact">
+            Contact
+          </Link>
+          {currentUser ? (
+            <span className="nav-link" onClick={signOutUser}>
+              Sign Out
+            </span>
+          ) : (
+            <Link className="nav-link" to="/auth">
+              Sign In
+            </Link>
+          )}
+          
+            <CartIcon />
+
         </div>
-    </div>
-)
+        {isCartOpen && <CartDropdown />}
+      </div>
+      <Outlet />
+    </Fragment>
+  );
+};
 
-const mapStateToProps = state =>({
-    currentUser : state.user.currentUser
-})
-
-export default connect(mapStateToProps)(Header);
+export default Header;
