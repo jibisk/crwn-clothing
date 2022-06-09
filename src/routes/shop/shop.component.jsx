@@ -1,45 +1,15 @@
-import {useContext} from 'react';
-import ProductCard from '../../components/product-card/product-card.component';
+import { Routes, Route } from 'react-router-dom';
 
-import { ProductContext } from '../../contexts/products.context';
-import './shop.styles.scss'
+import CategoriesPreview from '../categories-preview/categories-preview.component';
+import Category from '../category/category.component';
 
-const ShopPage = () => {
-
-  const {products} = useContext(ProductContext)
-
+const Shop = () => {
   return (
-    <div className='products-container'>
-      {products.map( (product) => (
-          <ProductCard  key={product.id} product={product} />
-      ))}
-    </div>
+    <Routes>
+      <Route index element={<CategoriesPreview />} />
+      <Route path=':category' element={<Category />} />
+    </Routes>
   );
 };
 
-export default ShopPage
-
-
-// class ShopPage extends React.Component {
-//   constructor(props) {
-//  ({ id, ...otherCollectionProps }) => (
-//   <CollectionPreview key={id} {...otherCollectionProps} />
-// ))
-//     this.state = {
-//       collections: SHOP_DATA
-//     };
-//   }
-
-//   render() {
-//     const { collections } = this.state;
-//     return (
-//       <div className='shop-page'>
-//         {collections.map(({ id, ...otherCollectionProps }) => (
-//           <CollectionPreview key={id} {...otherCollectionProps} />
-//         ))}
-//       </div>
-//     );
-//   }
-// }
-
-// export default ShopPage;
+export default Shop;
