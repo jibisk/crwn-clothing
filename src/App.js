@@ -6,6 +6,8 @@ import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component';
 import Checkout from './routes/checkout/checkout.component';
 
+import { GlobalStyle } from './global.styles';
+
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from './utils/firebase/firebase.utils';
@@ -28,6 +30,8 @@ const App = () => {
   }, [dispatch]);
 
   return (
+    <div>
+    <GlobalStyle />
     <Routes>
       <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
@@ -36,6 +40,7 @@ const App = () => {
         <Route path='checkout' element={<Checkout />} />
       </Route>
     </Routes>
+    </div>
   );
 };
 
